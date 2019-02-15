@@ -1,6 +1,6 @@
 # José Manuel Viloria Martin
 Hey!
-Regular nerd over here, sometimes I like go on a shooting spree with my Nikon D3300
+Regular nerd over here, sometimes I like going on a shooting spree with my Nikon D3300
 
 Nothing fancy.
 
