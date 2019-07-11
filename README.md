@@ -1,13 +1,5 @@
 # José Manuel Viloria Martin
-Hey!
-Regular nerd over here, sometimes I like going on a shooting spree with my Nikon D3300
-
-Nothing fancy.
-
-## Must knows
-Current location: Madrid - Spain
-
-Working @ Worten for all realms!
+Le site.
 
 ## Some links
 [LinkedIn](https://www.linkedin.com/in/kbono)
