@@ -37,7 +37,7 @@
     "devDependencies": {
         "browser-sync": "2.26.7",
         "del": "4.1.1",
-        "lodash": ">=4.17.13",
+        "lodash": ">=4.17.19",
         "lodash.template": ">=4.5.0",
         "gulp": "4.0.2",
         "gulp-autoprefixer": "6.1.0",
