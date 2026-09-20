@@ -1,0 +1,19 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  class?: string;
+  target?: string;
+  rel?: string;
+}
+
+const { href, label, class: className, target, rel } = Astro.props;
+---
+
+<a class:list={["md-link", className]} href={href} target={target} rel={rel}>
+  <span class="md-token md-bracket">[</span><span class="md-token md-link-label"
+    >{label}</span
+  ><span class="md-token md-bracket">](</span><span class="md-token md-url"
+    >{href}</span
+  ><span class="md-token md-bracket">)</span>
+</a>

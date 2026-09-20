@@ -1,0 +1,49 @@
+---
+import MdBold from "./MdBold.astro";
+
+interface Props {
+	text: string;
+	class?: string;
+}
+
+const { text, class: className } = Astro.props;
+
+type Segment =
+	| { type: "text"; value: string }
+	| { type: "bold"; value: string }
+	| { type: "br" };
+
+const segments: Segment[] = [];
+
+for (const part of text.split(/(\*\*.+?\*\*)/g)) {
+	const boldMatch = part.match(/^\*\*(.+)\*\*$/);
+	if (boldMatch) {
+		segments.push({ type: "bold", value: boldMatch[1]! });
+		continue;
+	}
+
+	const lines = part.split("\n");
+	lines.forEach((line, index) => {
+		if (line) {
+			segments.push({ type: "text", value: line });
+		}
+		if (index < lines.length - 1) {
+			segments.push({ type: "br" });
+		}
+	});
+}
+---
+
+<p class:list={["md-paragraph", className]}>
+	{
+		segments.map((segment) => {
+			if (segment.type === "bold") {
+				return <MdBold>{segment.value}</MdBold>;
+			}
+			if (segment.type === "br") {
+				return <br />;
+			}
+			return segment.value;
+		})
+	}
+</p>

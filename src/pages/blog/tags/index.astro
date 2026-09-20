@@ -1,0 +1,53 @@
+---
+import BlogShell from "../../../layouts/BlogShell.astro";
+import MdHeading from "../../../components/markdown/MdHeading.astro";
+import MdLink from "../../../components/markdown/MdLink.astro";
+import { getBlogTags } from "../../../lib/blog";
+import { site } from "../../../data/resume";
+
+const tags = await getBlogTags();
+const title = `${site.shortName} — Tags`;
+const description = `Browse blog posts by tag`;
+---
+
+<BlogShell
+  title={title}
+  description={description}
+  filename="blog/tags.md"
+  ogImage="/og-blog.png"
+  ogImageAlt={`${site.shortName} — Blog tags`}
+>
+  <p class="md-line">
+    <span class="md-token md-comment">---</span>
+  </p>
+  <p class="md-line">
+    <span class="md-token md-frontmatter-key">title:</span>
+    <span class="md-token md-frontmatter-value"> Tags</span>
+  </p>
+  <p class="md-line">
+    <span class="md-token md-comment">---</span>
+  </p>
+
+  <p class="md-line blog-back">
+    <MdLink href="/blog/" label="← Blog" />
+  </p>
+
+  <MdHeading level={1}>Tags</MdHeading>
+
+  {
+    tags.length === 0 ? (
+      <p class="md-paragraph">No tags yet.</p>
+    ) : (
+      <ul class="md-list">
+        {tags.map((tag) => (
+          <li>
+            <MdLink href={`/blog/tags/${tag.slug}/`} label={tag.label} />
+            <span class="md-token md-comment">
+              {" "}({tag.posts.length})
+            </span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BlogShell>

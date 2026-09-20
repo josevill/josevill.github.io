@@ -1,0 +1,91 @@
+---
+import BlogShell from "../../layouts/BlogShell.astro";
+import MdHeading from "../../components/markdown/MdHeading.astro";
+import MdLink from "../../components/markdown/MdLink.astro";
+import { formatPostDate, getVisiblePosts, slugifyTag } from "../../lib/blog";
+import { site } from "../../data/resume";
+
+const posts = await getVisiblePosts();
+const title = `${site.shortName} — Blog`;
+const description = `Posts by ${site.shortName}`;
+const ogImageAlt = `${site.shortName} — Blog`;
+const ogImage = "/og-blog.png";
+const blogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: title,
+  description,
+  url: Astro.site ? new URL("/blog/", Astro.site).href : "/blog/",
+  author: {
+    "@type": "Person",
+    name: site.name,
+    url: Astro.site?.href ?? "https://joseviloria.com",
+  },
+  image: Astro.site ? new URL(ogImage, Astro.site).href : ogImage,
+};
+---
+
+<BlogShell
+  title={title}
+  description={description}
+  filename="blog/index.md"
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+  jsonLd={blogJsonLd}
+>
+  <p class="md-line">
+    <span class="md-token md-comment">---</span>
+  </p>
+  <p class="md-line">
+    <span class="md-token md-frontmatter-key">title:</span>
+    <span class="md-token md-frontmatter-value"> Blog</span>
+  </p>
+  <p class="md-line">
+    <span class="md-token md-frontmatter-key">description:</span>
+    <span class="md-token md-frontmatter-value"> {description}</span>
+  </p>
+  <p class="md-line">
+    <span class="md-token md-comment">---</span>
+  </p>
+
+  <MdHeading level={1}>Blog</MdHeading>
+
+  {
+    posts.length === 0 ? (
+      <p class="md-paragraph">No posts yet.</p>
+    ) : (
+      <ul class="md-list blog-post-list">
+        {posts.map((post) => (
+          <li class="blog-post-item">
+            <p class="md-line">
+              <span class="md-token md-comment">## </span>
+              <MdLink href={`/blog/${post.id}/`} label={post.data.title} />
+            </p>
+            <p class="md-paragraph blog-post-meta">
+              <time datetime={post.data.pubDate.toISOString()}>
+                {formatPostDate(post.data.pubDate)}
+              </time>
+              {post.data.draft && (
+                <span class="md-token md-comment"> · draft</span>
+              )}
+            </p>
+            <p class="md-paragraph">{post.data.description}</p>
+            {post.data.tags.length > 0 && (
+              <p class="md-line blog-tags">
+                {post.data.tags.map((tag, i) => (
+                  <>
+                    {i > 0 && <span class="md-token md-comment"> · </span>}
+                    <MdLink
+                      href={`/blog/tags/${slugifyTag(tag)}/`}
+                      label={tag}
+                    />
+                  </>
+                ))}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BlogShell>

@@ -1,0 +1,27 @@
+---
+import { skills } from "../data/resume";
+import MdHeading from "./markdown/MdHeading.astro";
+import MdCode from "./markdown/MdCode.astro";
+import MdHr from "./markdown/MdHr.astro";
+---
+
+<section class="resume-section" id="skills">
+  <MdHeading level={2}>Skills</MdHeading>
+  {
+    skills.map((group) => (
+      <>
+        <MdHeading level={3}>{group.category}</MdHeading>
+        <ul class="md-list skill-list">
+          {group.items.map((item) => (
+            <li>
+              <span class="md-token md-list-marker">- </span>
+              <MdCode text={item} />
+            </li>
+          ))}
+        </ul>
+      </>
+    ))
+  }
+</section>
+
+<MdHr />

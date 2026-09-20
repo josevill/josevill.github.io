@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import About from "../components/About.astro";
+import Experience from "../components/Experience.astro";
+import Education from "../components/Education.astro";
+import Interests from "../components/Interests.astro";
+import Skills from "../components/Skills.astro";
+import LatestPosts from "../components/LatestPosts.astro";
+import { site, socialLinks } from "../data/resume";
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: Astro.site?.href ?? "https://joseviloria.com",
+  email: site.email,
+  jobTitle: site.role,
+  image: Astro.site
+    ? new URL("/img/profile.jpg", Astro.site).href
+    : "/img/profile.jpg",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "IE",
+  },
+  sameAs: socialLinks.map((link) => link.href),
+  description: site.description,
+};
+---
+
+<Layout
+  title={site.title}
+  description={site.description}
+  ogImage="/og.png"
+  ogImageAlt={`${site.shortName} — pseudo online CV and blog`}
+  jsonLd={personJsonLd}
+>
+  <div class="page-shell">
+    <Navigation />
+    <main class="md-document" id="main-content" tabindex="-1">
+      <div class="md-file-bar">
+        <span class="md-token md-comment"
+          >/the-internetz/joseviloria.com/
+        </span><span class="md-token md-filename">resume.md</span>
+      </div>
+      <article class="md-content">
+        <p class="md-line">
+          <span class="md-token md-comment">---</span>
+        </p>
+        <h1 class="md-line md-frontmatter-title">
+          <span class="md-token md-frontmatter-key" aria-hidden="true">title:</span>
+          <span class="md-token md-frontmatter-value"> {site.title}</span>
+        </h1>
+        <p class="md-line">
+          <span class="md-token md-frontmatter-key">description:</span>
+          <span class="md-token md-frontmatter-value">
+            {site.description}
+          </span>
+        </p>
+        <p class="md-line">
+          <span class="md-token md-comment">---</span>
+        </p>
+
+        <Interests />
+        <About />
+        <Experience />
+        <Education />
+        <Skills />
+        <LatestPosts />
+      </article>
+    </main>
+  </div>
+</Layout>

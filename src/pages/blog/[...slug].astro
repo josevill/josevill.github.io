@@ -1,0 +1,158 @@
+---
+import BlogShell from "../../layouts/BlogShell.astro";
+import MdHeading from "../../components/markdown/MdHeading.astro";
+import MdLink from "../../components/markdown/MdLink.astro";
+import {
+	formatPostDate,
+	getVisiblePosts,
+	slugifyTag,
+	type BlogPost,
+} from "../../lib/blog";
+import { site } from "../../data/resume";
+import { render } from "astro:content";
+
+export async function getStaticPaths() {
+	const posts = await getVisiblePosts();
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+interface Props {
+	post: BlogPost;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const title = post.data.title;
+const description = post.data.description;
+const canonicalURL = Astro.site
+	? new URL(`/blog/${post.id}/`, Astro.site).href
+	: undefined;
+const ogImage = "/og-blog.png";
+const ogImageURL = Astro.site
+	? new URL(ogImage, Astro.site).href
+	: ogImage;
+const ogImageAlt = `${post.data.title} — ${site.shortName}`;
+
+const blogPostingJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	headline: post.data.title,
+	description: post.data.description,
+	datePublished: post.data.pubDate.toISOString(),
+	...(post.data.updatedDate && {
+		dateModified: post.data.updatedDate.toISOString(),
+	}),
+	image: [ogImageURL],
+	author: {
+		"@type": "Person",
+		name: site.name,
+		url: Astro.site?.href ?? "https://joseviloria.com",
+	},
+	...(canonicalURL && { mainEntityOfPage: canonicalURL, url: canonicalURL }),
+	...(post.data.tags.length > 0 && { keywords: post.data.tags.join(", ") }),
+};
+---
+
+<BlogShell
+	title={title}
+	description={description}
+	filename={`blog/${post.id}.md`}
+	ogType="article"
+	ogImage={ogImage}
+	ogImageAlt={ogImageAlt}
+	publishedTime={post.data.pubDate}
+	modifiedTime={post.data.updatedDate}
+	articleTags={post.data.tags}
+	jsonLd={blogPostingJsonLd}
+>
+	<p class="md-line">
+		<span class="md-token md-comment">---</span>
+	</p>
+	<p class="md-line">
+		<span class="md-token md-frontmatter-key">title:</span>
+		<span class="md-token md-frontmatter-value"> {post.data.title}</span>
+	</p>
+	<p class="md-line">
+		<span class="md-token md-frontmatter-key">description:</span>
+		<span class="md-token md-frontmatter-value"> {post.data.description}</span>
+	</p>
+	<p class="md-line">
+		<span class="md-token md-frontmatter-key">pubDate:</span>
+		<span class="md-token md-frontmatter-value">
+			{" "}{formatPostDate(post.data.pubDate)}</span
+		>
+	</p>
+	{
+		post.data.updatedDate && (
+			<p class="md-line">
+				<span class="md-token md-frontmatter-key">updatedDate:</span>
+				<span class="md-token md-frontmatter-value">
+					{" "}{formatPostDate(post.data.updatedDate)}
+				</span>
+			</p>
+		)
+	}
+	{
+		post.data.draft && (
+			<p class="md-line">
+				<span class="md-token md-frontmatter-key">draft:</span>
+				<span class="md-token md-frontmatter-value"> true</span>
+			</p>
+		)
+	}
+	{
+		post.data.tags.length > 0 && (
+			<p class="md-line">
+				<span class="md-token md-frontmatter-key">tags:</span>
+				<span class="md-token md-frontmatter-value">
+					{" "}[{post.data.tags.join(", ")}]
+				</span>
+			</p>
+		)
+	}
+	<p class="md-line">
+		<span class="md-token md-comment">---</span>
+	</p>
+
+	<p class="md-line blog-back">
+		<MdLink href="/blog/" label="← Blog" />
+	</p>
+
+	<MdHeading level={1}>{post.data.title}</MdHeading>
+
+	<p class="md-paragraph blog-post-meta">
+		<time datetime={post.data.pubDate.toISOString()}>
+			{formatPostDate(post.data.pubDate)}
+		</time>
+		{
+			post.data.updatedDate && (
+				<>
+					{" · Updated "}
+					<time datetime={post.data.updatedDate.toISOString()}>
+						{formatPostDate(post.data.updatedDate)}
+					</time>
+				</>
+			)
+		}
+	</p>
+
+	{
+		post.data.tags.length > 0 && (
+			<p class="md-line blog-tags">
+				{post.data.tags.map((tag, i) => (
+					<>
+						{i > 0 && <span class="md-token md-comment"> · </span>}
+						<MdLink href={`/blog/tags/${slugifyTag(tag)}/`} label={tag} />
+					</>
+				))}
+			</p>
+		)
+	}
+
+	<div class="blog-prose">
+		<Content />
+	</div>
+</BlogShell>

@@ -1,0 +1,14 @@
+---
+interface Props {
+  text: string;
+  class?: string;
+}
+
+const { text, class: className } = Astro.props;
+---
+
+<span class:list={["md-inline-code", className]}>
+  <span class="md-token md-backtick">`</span><span class="md-token md-code"
+    >{text}</span
+  ><span class="md-token md-backtick">`</span>
+</span>

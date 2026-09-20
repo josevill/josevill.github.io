@@ -1,0 +1,32 @@
+---
+import { education } from "../data/resume";
+import MdHeading from "./markdown/MdHeading.astro";
+import MdItalic from "./markdown/MdItalic.astro";
+import MdCode from "./markdown/MdCode.astro";
+import MdHr from "./markdown/MdHr.astro";
+---
+
+<section class="resume-section resume-section--dated" id="education">
+  <MdHeading level={2}>Education</MdHeading>
+  {
+    education.map((item) => (
+      <article class="resume-item">
+        <div>
+          <MdHeading level={3}>{item.institution}</MdHeading>
+          <p class="md-line">
+            <MdItalic text={item.degree} />
+          </p>
+          <blockquote class="md-blockquote">
+            <span class="md-token md-blockquote-marker">&gt; </span>
+            <span class="md-blockquote-text">{item.description}</span>
+          </blockquote>
+        </div>
+        <div class="resume-date">
+          <MdCode text={item.period} />
+        </div>
+      </article>
+    ))
+  }
+</section>
+
+<MdHr />

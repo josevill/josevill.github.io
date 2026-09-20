@@ -1,0 +1,40 @@
+---
+import { experience } from "../data/resume";
+import MdHeading from "./markdown/MdHeading.astro";
+import MdItalic from "./markdown/MdItalic.astro";
+import MdCode from "./markdown/MdCode.astro";
+import MdHr from "./markdown/MdHr.astro";
+import MdParagraph from "./markdown/MdParagraph.astro";
+---
+
+<section class="resume-section resume-section--dated" id="experience">
+  <MdHeading level={2}>Experience</MdHeading>
+  {
+    experience.map((item) => (
+      <article class="resume-item">
+        <div>
+          <MdHeading level={3}>{item.title}</MdHeading>
+          <p class="md-line">
+            <MdItalic text={item.company} />
+          </p>
+          {item.summary && <MdParagraph text={item.summary} />}
+          {item.achievements.length > 0 && (
+            <ul class="md-list">
+              {item.achievements.map((achievement) => (
+                <li>
+                  <span class="md-token md-list-marker">- </span>
+                  <span class="md-list-text">{achievement}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div class="resume-date">
+          <MdCode text={item.period} />
+        </div>
+      </article>
+    ))
+  }
+</section>
+
+<MdHr />

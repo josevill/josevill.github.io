@@ -1,0 +1,54 @@
+---
+import Layout from "../layouts/Layout.astro";
+import MdHeading from "../components/markdown/MdHeading.astro";
+import MdLink from "../components/markdown/MdLink.astro";
+import MdParagraph from "../components/markdown/MdParagraph.astro";
+import { site } from "../data/resume";
+---
+
+<Layout
+  title={`404 — ${site.shortName}`}
+  description="Page not found."
+  noindex={true}
+  ogImage="/og.png"
+  ogImageAlt={`${site.shortName} — page not found`}
+>
+  <div class="page-shell page-shell--centered">
+    <main class="md-document" id="main-content" tabindex="-1">
+      <div class="md-file-bar">
+        <span class="md-token md-comment"
+          >/the-internetz/joseviloria.com/
+        </span><span class="md-token md-filename">404.md</span>
+      </div>
+      <article class="md-content">
+        <p class="md-line">
+          <span class="md-token md-comment">---</span>
+        </p>
+        <p class="md-line">
+          <span class="md-token md-frontmatter-key">title:</span>
+          <span class="md-token md-frontmatter-value"> Not Found</span>
+        </p>
+        <p class="md-line">
+          <span class="md-token md-frontmatter-key">status:</span>
+          <span class="md-token md-frontmatter-value"> 404</span>
+        </p>
+        <p class="md-line">
+          <span class="md-token md-comment">---</span>
+        </p>
+
+        <MdHeading level={1}>404</MdHeading>
+        <MdParagraph text="This path is not in the tree. Maybe it was never committed — or you typed a typo." />
+        <ul class="md-list">
+          <li>
+            <span class="md-token md-list-marker">- </span>
+            <MdLink href="/" label="Home (resume)" />
+          </li>
+          <li>
+            <span class="md-token md-list-marker">- </span>
+            <MdLink href="/blog/" label="Blog" />
+          </li>
+        </ul>
+      </article>
+    </main>
+  </div>
+</Layout>

@@ -1,0 +1,35 @@
+---
+import { about, site, socialLinks } from "../data/resume";
+import MdHeading from "./markdown/MdHeading.astro";
+import MdLink from "./markdown/MdLink.astro";
+import MdHr from "./markdown/MdHr.astro";
+import MdParagraph from "./markdown/MdParagraph.astro";
+---
+
+<section class="resume-section" id="whoami">
+  <MdHeading level={2}>Who am i</MdHeading>
+  <p class="md-line">
+    <MdLink href={`mailto:${site.email}`} label={site.email} />
+  </p>
+
+  <MdParagraph text={about.lead} />
+
+  <MdHeading level={2}>Links</MdHeading>
+  <ul class="md-list social-links">
+    {
+      socialLinks.map((link) => (
+        <li>
+          <span class="md-token md-list-marker">- </span>
+          <MdLink
+            href={link.href}
+            label={link.label}
+            target="_blank"
+            rel="noopener noreferrer"
+          />
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<MdHr />

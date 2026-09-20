@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" role="img" aria-label="Wide placeholder">
+  <rect width="960" height="360" fill="#313244"/>
+  <rect x="24" y="24" width="912" height="312" fill="none" stroke="#6c7086" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="480" y="175" text-anchor="middle" font-family="ui-monospace, monospace" font-size="22" fill="#cdd6f4">960 x 360 placeholder</text>
+  <text x="480" y="210" text-anchor="middle" font-family="ui-monospace, monospace" font-size="14" fill="#6c7086">blog image - wide</text>
+</svg>

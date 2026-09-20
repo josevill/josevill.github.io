@@ -1,0 +1,20 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  /** Use for in-page hash links that should smooth-scroll. */
+  scroll?: boolean;
+}
+
+const { href, label, scroll = href.includes("#") } = Astro.props;
+---
+
+<a class:list={["md-nav-link", { "js-scroll-trigger": scroll }]} href={href}>
+  <span class="md-token md-list-marker">- </span><span
+    class="md-token md-bracket">[</span
+  ><span class="md-token md-link-label">{label}</span><span
+    class="md-token md-bracket">](</span
+  ><span class="md-token md-url">{href}</span><span class="md-token md-bracket"
+    >)</span
+  >
+</a>

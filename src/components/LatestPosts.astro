@@ -1,0 +1,39 @@
+---
+import { getVisiblePosts, formatPostDate } from "../lib/blog";
+import MdHeading from "./markdown/MdHeading.astro";
+import MdLink from "./markdown/MdLink.astro";
+import MdHr from "./markdown/MdHr.astro";
+
+const posts = (await getVisiblePosts()).slice(0, 3);
+---
+
+{
+  posts.length > 0 && (
+    <>
+      <section class="resume-section" id="latest-posts">
+        <MdHeading level={2}>Latest from the blog</MdHeading>
+        <ul class="md-list blog-post-list">
+          {posts.map((post) => (
+            <li class="blog-post-item">
+              <span class="md-token md-list-marker">- </span>
+              <MdLink href={`/blog/${post.id}/`} label={post.data.title} />
+              <p class="md-paragraph blog-post-meta">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {formatPostDate(post.data.pubDate)}
+                </time>
+                {post.data.draft && (
+                  <span class="md-token md-comment"> · draft</span>
+                )}
+              </p>
+              <p class="md-paragraph">{post.data.description}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="md-line">
+          <MdLink href="/blog/" label="All posts →" />
+        </p>
+      </section>
+      <MdHr />
+    </>
+  )
+}

@@ -1,0 +1,25 @@
+---
+interface Props {
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+  id?: string;
+  class?: string;
+  /** Render as a non-heading element (e.g. "p") for decorative labels. */
+  as?: "p";
+}
+
+const { level, id, class: className, as } = Astro.props;
+const Tag = (as ?? `h${level}`) as
+  | "p"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6";
+const marker = "#".repeat(level);
+---
+
+<Tag class:list={["md-heading", `md-h${level}`, className]} id={id}>
+  <span class="md-token md-hash" aria-hidden="true">{marker}&nbsp;</span>
+  <span class="md-heading-content"><slot /></span>
+</Tag>

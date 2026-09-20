@@ -1,0 +1,13 @@
+---
+import { interests } from "../data/resume";
+import MdHeading from "./markdown/MdHeading.astro";
+import MdParagraph from "./markdown/MdParagraph.astro";
+import MdHr from "./markdown/MdHr.astro";
+---
+
+<section class="resume-section" id="interests">
+  <MdHeading level={2}>Interests</MdHeading>
+  {interests.map((paragraph) => <MdParagraph text={paragraph} />)}
+</section>
+
+<MdHr />

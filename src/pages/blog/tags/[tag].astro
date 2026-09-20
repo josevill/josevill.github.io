@@ -1,0 +1,74 @@
+---
+import BlogShell from "../../../layouts/BlogShell.astro";
+import MdHeading from "../../../components/markdown/MdHeading.astro";
+import MdLink from "../../../components/markdown/MdLink.astro";
+import {
+	formatPostDate,
+	getBlogTags,
+	type BlogTag,
+} from "../../../lib/blog";
+import { site } from "../../../data/resume";
+
+export async function getStaticPaths() {
+	const tags = await getBlogTags();
+	return tags.map((tag) => ({
+		params: { tag: tag.slug },
+		props: { tag },
+	}));
+}
+
+interface Props {
+	tag: BlogTag;
+}
+
+const { tag } = Astro.props;
+const title = `${site.shortName} — ${tag.label}`;
+const description = `Posts tagged “${tag.label}”`;
+---
+
+<BlogShell
+	title={title}
+	description={description}
+	filename={`blog/tags/${tag.slug}.md`}
+	ogImage="/og-blog.png"
+	ogImageAlt={`${site.shortName} — Posts tagged ${tag.label}`}
+>
+	<p class="md-line">
+		<span class="md-token md-comment">---</span>
+	</p>
+	<p class="md-line">
+		<span class="md-token md-frontmatter-key">tag:</span>
+		<span class="md-token md-frontmatter-value"> {tag.label}</span>
+	</p>
+	<p class="md-line">
+		<span class="md-token md-comment">---</span>
+	</p>
+
+	<p class="md-line blog-back">
+		<MdLink href="/blog/tags/" label="← Tags" />
+	</p>
+
+	<MdHeading level={1}>{tag.label}</MdHeading>
+
+	<ul class="md-list blog-post-list">
+		{
+			tag.posts.map((post) => (
+				<li class="blog-post-item">
+					<p class="md-line">
+						<span class="md-token md-comment">## </span>
+						<MdLink href={`/blog/${post.id}/`} label={post.data.title} />
+					</p>
+					<p class="md-paragraph blog-post-meta">
+						<time datetime={post.data.pubDate.toISOString()}>
+							{formatPostDate(post.data.pubDate)}
+						</time>
+						{post.data.draft && (
+							<span class="md-token md-comment"> · draft</span>
+						)}
+					</p>
+					<p class="md-paragraph">{post.data.description}</p>
+				</li>
+			))
+		}
+	</ul>
+</BlogShell>

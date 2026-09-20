@@ -1,0 +1,59 @@
+---
+import Layout from "./Layout.astro";
+import BlogNavigation from "../components/BlogNavigation.astro";
+
+interface Props {
+	title: string;
+	description: string;
+	filename: string;
+	ogType?: "website" | "article";
+	ogImage?: string;
+	ogImageAlt?: string;
+	publishedTime?: Date;
+	modifiedTime?: Date;
+	articleTags?: string[];
+	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+	noindex?: boolean;
+}
+
+const {
+	title,
+	description,
+	filename,
+	ogType = "website",
+	ogImage,
+	ogImageAlt,
+	publishedTime,
+	modifiedTime,
+	articleTags,
+	jsonLd,
+	noindex,
+} = Astro.props;
+---
+
+<Layout
+	title={title}
+	description={description}
+	ogType={ogType}
+	ogImage={ogImage}
+	ogImageAlt={ogImageAlt}
+	publishedTime={publishedTime}
+	modifiedTime={modifiedTime}
+	articleTags={articleTags}
+	jsonLd={jsonLd}
+	noindex={noindex}
+>
+	<div class="page-shell">
+		<BlogNavigation />
+		<main class="md-document" id="main-content" tabindex="-1">
+			<div class="md-file-bar">
+				<span class="md-token md-comment"
+					>/the-internetz/joseviloria.com/
+				</span><span class="md-token md-filename">{filename}</span>
+			</div>
+			<article class="md-content">
+				<slot />
+			</article>
+		</main>
+	</div>
+</Layout>
