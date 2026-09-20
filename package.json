@@ -17,7 +17,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@webtui/css": "^0.1.8",
     "@webtui/theme-catppuccin": "^0.0.4",
-    "astro": "^6.4.7"
+    "astro": "^7.2.8"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
